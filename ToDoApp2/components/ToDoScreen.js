@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, View, Text, TextInput, Button } from 'react-native'
+import { Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 function ToDoScreen(props){
@@ -18,18 +18,22 @@ function ToDoScreen(props){
                 value={term}
                 placeholder='Nhập....'
                 />
-                <Button style={styles.btn} title={'Add'} onPress={()=>{
-                    handlerSubmitInput(term);
-                    setTerm('');
-                }}/>
+                <TouchableOpacity>
+                    <Button style={styles.btn} title={'Add'} onPress={()=>{
+                        handlerSubmitInput(term);
+                        setTerm('');
+                    }}/>
+                </TouchableOpacity>
              </View>
-             <View>
+             <View style = {{width: '100%'}}>
                 {toDoList.map(function(item){
                     return (
-                        <Text style={styles.content}>
+                        <View style={styles.content}>
+                            <Text style={styles.text}>
+                                {item}
+                            </Text>
                             <Ionicons name='close-circle-outline' size={24}  onPress={() => handlerOnClickItem(item)}/>
-                            {item}
-                        </Text>
+                        </View>
                     )
                 })}
             </View>
@@ -68,6 +72,12 @@ const styles = StyleSheet.create({
         borderStyle: 'solid'
     },
     content: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    text: {
         fontSize: 24
     }
 })

@@ -29,6 +29,7 @@ function HomePage(props){
     )
 }
 
+
 export default HomePage;
 
 const styles = StyleSheet.create({
