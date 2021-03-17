@@ -1,31 +1,102 @@
 const initialState = {
-    list: [],
-    activeId: false,
+    list: [
+        // { work: 'đi làm', isComplete: false },
+        // { work: 'đi học', isComplete: true },
+        // { work: 'đi chơi', isComplete: true },
+        // { work: 'đi bơi', isComplete: false },
+        // { work: 'đi cf', isComplete: false }
+    ],
+    arrayClone: [
+        // { work: 'đi làm', isComplete: false },
+        // { work: 'đi học', isComplete: true },
+        // { work: 'đi chơi', isComplete: true },
+        // { work: 'đi bơi', isComplete: false },
+        // { work: 'đi cf', isComplete: false }
+    ]
 }
 
 const addReducer = ( state = initialState, action ) => {
     switch (action.type) {
-        case 'ADD_HOBBY': {
+        case 'ADD_WORK': {
             const newList = [...state.list];
-            newList.push(action.payload);
+            newList.unshift({ work: action.payload, isComplete: false });
             return {
                 ...state,
                 list: newList,
+                arrayClone: newList
             };
         }
-        case 'SET_ACTIVE_HOBBY': {
+        case 'SET_ACTIVE_WORK': {
+            const newList = [...state.list];
+            const index = newList.findIndex( element => {
+                if (element.work === action.payload.work) {
+                  return true;
+                }
+              });
+            newList[index].isComplete = !newList[index].isComplete;
             return {
                 ...state,
-                activeId: !activeId
+                list: newList,
+                arrayClone: newList
             }
         }
-        case 'DELETE_HOBBY': {
-            const newList = [...state.list];
-            const index = newList.indexOf(action.payload);
-            newList.splice(index,1);
+        case 'DELETE_WORK': {
+            const stateTotal = [...state.arrayClone];
+            const newList = stateTotal.filter(element => {
+                return element.isComplete == false;
+            });
+            return {
+                ...state,
+                list: newList,
+                arrayClone: newList
+            }
+        }
+        case 'ALL_WORK': {
+            console.log(state);
+            const stateTotal = [...state.arrayClone];
+            return {
+                ...state,
+                list: stateTotal
+            }
+        }
+        case 'ACTIVE_WORK': {
+            const stateTotal = [...state.arrayClone];
+            const newList = stateTotal.filter(element => {
+                return element.isComplete == false;
+            });
             return {
                 ...state,
                 list: newList
+            }
+        }
+        case 'COMPLETE_WORK': {
+            const stateTotal = [...state.arrayClone];
+            const newList = stateTotal.filter(element => {
+                return element.isComplete == true;
+            });
+            return {
+                ...state,
+                list: newList
+            }
+        }
+        case 'ALL_COMPLETE_WORK': {
+            const newlist = [...state.arrayClone];
+            for(const object of newlist){
+                if(object.isComplete == false) object.isComplete = true;
+            }
+            return{
+                ...state,
+                list: newlist,
+                arrayClone: newlist
+            }
+
+        }   
+        case 'SET_STATE': {
+            console.log(action.payload)
+            return {
+                ...state,
+                list: action.payload,
+                arrayClone: action.payload
             }
         }
         default:
